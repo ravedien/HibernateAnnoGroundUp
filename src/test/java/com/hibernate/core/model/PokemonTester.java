@@ -14,7 +14,10 @@ public class PokemonTester {
 		
 		PokemonTester implTester = new PokemonTester();
 		
-		implTester.insertPokemon(implTester.createPokemonDependency());
+		Pokemon haunter = implTester.createPokemonDependency();
+		haunter.setPokeType(implTester.createPokemonTypeDependency());
+		
+		implTester.insertPokemon(haunter);
 	}
 	
 	public Integer insertPokemon(Pokemon pokemon){
@@ -22,7 +25,7 @@ public class PokemonTester {
 		Transaction tx = null;
 		Integer generatedId = null;
 		try{
-			tx = session.getTransaction();
+			tx = session.beginTransaction();
 			generatedId = pokemonDAO.save(pokemon, session);
 			tx.commit();
 		}
@@ -44,5 +47,10 @@ public class PokemonTester {
 		pokemon.setPokeName("Haunter");
 		pokemon.setWeight(0.1);
 		return pokemon;
+	}
+	private PokeType createPokemonTypeDependency() {
+		PokeType pokemonType = new PokeType();
+		pokemonType.setTypeName("Ghost");
+		return pokemonType;
 	}
 }
