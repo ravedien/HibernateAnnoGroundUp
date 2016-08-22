@@ -3,18 +3,27 @@ package com.hibernate.core.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="poke_type")
 public class PokeType {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poke_type_type_id_seq")
+	@SequenceGenerator(name="type_id", sequenceName="poke_type_type_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_id")
+	@Column(name="type_id")
 	private int typeId;
+	
+	@Column(name="type_name")
 	private String typeName;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pokeType", targetEntity = Pokemon.class, fetch = FetchType.LAZY)

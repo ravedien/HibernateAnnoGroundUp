@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
-
-import com.hibernate.core.util.HibernateUtil;
 
 public class GenericDAOImpl<T> implements GenericDAO<T> {
 
-	public void save(T entity, Session session) {
-		session.save(entity);
+	public Integer save(T entity, Session session) {
+		return (Integer) session.save(entity);
 	}
 
 	public void update(T entity, Session session) {
@@ -38,17 +35,4 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public List<T> findManyByCriteria(Query query, Session session) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public T findOneByCriteria(Query query, Session session) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
 }

@@ -3,26 +3,46 @@ package com.hibernate.core.model;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.hibernate.core.GenericDAOImpl;
 import com.hibernate.core.util.HibernateUtil;
 
 public class PokemonTester {
+	
+	GenericDAOImpl<Pokemon> pokemonDAO = new GenericDAOImpl<Pokemon>();
+
 	public static void main(String[] args) {
-		PokemonTester pokemonTester = new PokemonTester();
+		
+		PokemonTester implTester = new PokemonTester();
+		
+		implTester.insertPokemon(implTester.createPokemonDependency());
 	}
 	
-	public Integer insertPokemon(){
+	public Integer insertPokemon(Pokemon pokemon){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
 		Integer generatedId = null;
 		try{
-			HibernateUtil.beginTransaction();
-//			generatedId =  HibernateUtil.getSession().save(pokemon);
-			
+			tx = session.getTransaction();
+			generatedId = pokemonDAO.save(pokemon, session);
+			tx.commit();
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			HibernateUtil.rollbackTransaction();
+			if(tx != null){
+				tx.rollback();
+			}
+			
 		}finally {
-			HibernateUtil.closeSession();
+			session.close();
 		}
-		return 1;
+		return generatedId;
+	}
+
+	private Pokemon createPokemonDependency() {
+		Pokemon pokemon = new Pokemon();
+		pokemon.setHeight(1.6);
+		pokemon.setPokeName("Haunter");
+		pokemon.setWeight(0.1);
+		return pokemon;
 	}
 }

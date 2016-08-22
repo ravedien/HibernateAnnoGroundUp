@@ -7,11 +7,14 @@ import com.hibernate.core.util.HibernateUtil;
 
 public class PokemonService {
 	
-	public void savePokemon(){
+	
+	public Integer savePokemon(){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
+		Integer generatedId = null;
 		try{
 			tx = session.beginTransaction();
+			
 		}catch(Exception e){
 			System.err.println("savePokemon service error:"+e.getStackTrace());
 			if(tx != null){
@@ -20,7 +23,7 @@ public class PokemonService {
 		}finally {
 			session.close();
 		}
-		
+		return generatedId;
 	}
 	
 }
